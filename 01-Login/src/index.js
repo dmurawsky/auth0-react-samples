@@ -23,11 +23,15 @@ class App extends Component {
 
   componentDidMount() {
     this.setState(() => ({
-      searches: location.hash
-        .substring(1)
-        .split("&")
-        .map(s => s.split("="))
+      searches: [
+        ...this._format(location.hash),
+        ...this._format(location.search),
+      ]
     }));
+  }
+
+  _format(str) {
+    return str.substring(1).split("&").map(s => s.split("="))
   }
 
   _login() {
@@ -37,7 +41,7 @@ class App extends Component {
   render() {
     return (
       <div style={{ margin: 80 }}>
-        <button onClick={this._login}>AUTH</button>
+        <button onClick={this._login}>Authenticate</button>
         <hr />
         {this.state.searches.map(s => (
           <div key={JSON.stringify(s)}>
